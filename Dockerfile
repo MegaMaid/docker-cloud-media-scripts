@@ -23,13 +23,6 @@ RUN apt-get update && \
     apt-get install -y openssl && \
     sed -i 's/#user_allow_other/user_allow_other/' /etc/fuse.conf
 
-# MongoDB 3.4
-RUN \
-   apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6 && \
-   echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list && \
-   apt-get update && \
-   apt-get install -y mongodb-org
-
 # S6 overlay
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 ENV S6_KEEP_ENV=1
@@ -55,10 +48,13 @@ ENV RCLONE_CLOUD_ENDPOINT "gd-crypt:"
 ENV RCLONE_LOCAL_ENDPOINT "local-crypt:"
 
 # Plexdrive
-ENV CHUNK_SIZE "10M"
-ENV CLEAR_CHUNK_MAX_SIZE ""
-ENV CLEAR_CHUNK_AGE "24h"
-ENV MONGO_DATABASE "plexdrive"
+ENV PLEXDRIVE_CHECK_THREADS "2"
+ENV PLEXDRIVE_LOAD_AHEAD "3"
+ENV PLEXDRIVE_LOAD_THREADS "2"
+ENV PLEXDRIVE_CHUNK_SIZE "25M"
+ENV PLEXDRIVE_MAX_CHUNKS "50"
+ENV PLEXDRIVE_REFRESH_INTERVAL "1m0s"
+ENV PLEXDRIVE_VERBOSITY "1"
 
 # Time format
 ENV DATE_FORMAT "+%F@%T"
@@ -96,8 +92,7 @@ RUN chmod a+x /install.sh && \
 # VOLUMES
 ####################
 # Define mountable directories.
-#VOLUME /data/db /config /cloud-encrypt /cloud-decrypt /local-decrypt /local-media /chunks /log
-VOLUME /data/db /cloud-encrypt /cloud-decrypt /local-decrypt /local-media /chunks /log
+VOLUME /data/db /cloud-encrypt /cloud-decrypt /local-decrypt /local-media /cache /log
 
 
 RUN chmod -R 777 /data /log && \

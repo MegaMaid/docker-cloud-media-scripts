@@ -1,12 +1,12 @@
 #!/bin/bash
 # Rclone variables
-_rclone_version="v1.39"
+_rclone_version="v1.42"
 rclone_release="rclone-${_rclone_version}-linux-amd64"
 rclone_zip="${rclone_release}.zip"
 rclone_url="https://github.com/ncw/rclone/releases/download/${_rclone_version}/${rclone_zip}"
 # Plexdrive variables
 plexdrive_bin="plexdrive-linux-amd64"
-plexdrive_url="https://github.com/dweidenfeld/plexdrive/releases/download/4.0.0/${plexdrive_bin}"
+plexdrive_url="https://github.com/dweidenfeld/plexdrive/releases/download/5.0.0/${plexdrive_bin}"
 # Rclone
 wget "$rclone_url"
 unzip "$rclone_zip"

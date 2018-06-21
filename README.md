@@ -102,14 +102,14 @@ Setup Rclone run `docker exec -ti <DOCKER_CONTAINER> rclone_setup`
  - Endpoint to your cloud storage.
 	- Create new remote [**Press N**]
 	- Give it a name example gd
-	- Choose Google Drive [**Press 8**]
+	- Choose Google Drive [**Press 11**]
 	- If you have a client id paste it here or leave it blank
 	- Choose headless machine [**Press N**]
 	- Open the url in your browser and enter the verification code
  - Encryption and decryption for your cloud storage.
 	- Create new remote [**Press N**]
 	- Give it the same name as specified in the environment variable `RCLONE_CLOUD_ENDPOINT` but without colon (:) (*default gd-crypt*)
-	- Choose Encrypt/Decrypt a remote [**Press 5**]
+	- Choose Encrypt/Decrypt a remote [**Press 8**]
 	- Enter the name of the endpoint created in cloud-storage appended with a colon (:) and the subfolder on your cloud. Example `gd:/Media` or just `gd:` if you have your files in root in the cloud.
 	- Choose how to encrypt filenames. I prefer option 2 Encrypt the filenames
 	- Choose to either generate your own or random password. I prefer to enter my own.

@@ -13,18 +13,35 @@ rclone_config="--config=/config/rclone.conf"
 rclone_options="${rclone_config} --buffer-size $(printenv BUFFER_SIZE) --checkers $(printenv CHECKERS)"
 rclone_mount_options="${rclone_options} --allow-non-empty --allow-other --max-read-ahead $(printenv MAX_READ_AHEAD) --uid ${_puid:-911} --gid ${_pgid:-911}"
 
-plexdrive_temp_dir="/chunks"
-plexdrive_options="--config=/config --temp=${plexdrive_temp_dir} --chunk-size=$(printenv CHUNK_SIZE) --clear-chunk-age=$(printenv CLEAR_CHUNK_AGE) --uid=${_puid:-911} --gid=${_pgid:-911} -o allow_other"
-if [ ! -z $(printenv CLEAR_CHUNK_MAX_SIZE) ]; then
-    plexdrive_options="${plexdrive_options} --clear-chunk-max-size=$(printenv CLEAR_CHUNK_MAX_SIZE)"
+plexdrive_temp_dir="/cache"
+plexdrive_options="--config=/config --cache-file=${plexdrive_temp_dir}/cache.bolt --uid=${_puid:-911} --gid=${_pgid:-911} -o allow_other"
+
+if [ ! -z $(printenv PLEXDRIVE_CHECK_THREADS) ]; then
+    plexdrive_options="${plexdrive_options} --chunk-check-threads=$(printenv PLEXDRIVE_CHECK_THREADS)"
+fi
+if [ ! -z $(printenv PLEXDRIVE_LOAD_AHEAD) ]; then
+    plexdrive_options="${plexdrive_options} --chunk-load-ahead=$(printenv PLEXDRIVE_LOAD_AHEAD)"
+fi
+if [ ! -z $(printenv PLEXDRIVE_LOAD_THREADS) ]; then
+    plexdrive_options="${plexdrive_options} --chunk-load-threads=$(printenv PLEXDRIVE_LOAD_THREADS)"
+fi
+if [ ! -z $(printenv PLEXDRIVE_CHUNK_SIZE) ]; then
+    plexdrive_options="${plexdrive_options} --chunk-size=$(printenv PLEXDRIVE_CHUNK_SIZE)"
+fi
+if [ ! -z $(printenv PLEXDRIVE_MAX_CHUNKS) ]; then
+    plexdrive_options="${plexdrive_options} --max-chunks=$(printenv PLEXDRIVE_MAX_CHUNKS)"
+fi
+if [ ! -z $(printenv PLEXDRIVE_REFRESH_INTERVAL) ]; then
+    plexdrive_options="${plexdrive_options} --refresh-interval=$(printenv PLEXDRIVE_REFRESH_INTERVAL)"
+fi
+if [ ! -z $(printenv PLEXDRIVE_VERBOSITY) ]; then
+    plexdrive_options="${plexdrive_options} --verbosity=$(printenv PLEXDRIVE_VERBOSITY)"
 fi
 
 if [ "$(printenv READ_ONLY)" != "0" ]; then
     rclone_mount_options="${rclone_mount_options} --read-only"
     plexdrive_options="${plexdrive_options} -o read_only"
 fi
-
-mongo="--mongo-database=$(printenv MONGO_DATABASE) --mongo-host=localhost"
 
 ufs_options="-o uid=${_puid:-911} -o gid=${_pgid:-911} -o cow,allow_other,direct_io,nonempty,auto_cache,sync_read"
 
