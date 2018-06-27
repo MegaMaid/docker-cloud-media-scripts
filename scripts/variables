@@ -11,6 +11,11 @@ local_media_dir="/local-media"
 
 rclone_config="--config=/config/rclone.conf"
 rclone_options="${rclone_config} --buffer-size $(printenv BUFFER_SIZE) --checkers $(printenv CHECKERS)"
+
+if [ "$(printenv RCLONE_DISABLE_MEMORY_CACHE)" -eq "1" ]; then
+    rclone_options="${rclone_config} --cache-chunk-no-memory"
+fi
+
 rclone_mount_options="${rclone_options} --allow-non-empty --allow-other --max-read-ahead $(printenv MAX_READ_AHEAD) --uid ${_puid:-911} --gid ${_pgid:-911}"
 
 plexdrive_temp_dir="/cache"
