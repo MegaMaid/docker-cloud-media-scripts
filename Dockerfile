@@ -83,8 +83,8 @@ RUN chmod a+x /install.sh && \
     sh /install.sh && \
     chmod a+x /usr/bin/* && \
     groupmod -g 1000 users && \
-	useradd -u 911 -U -d / -s /bin/false abc && \
-	usermod -G users abc && \
+    useradd -u 911 -U -d / -s /bin/false abc && \
+    usermod -G users abc && \
     apt-get clean autoclean && \
     apt-get autoremove -y && \
     rm -rf /tmp/* /var/lib/{apt,dpkg,cache,log}/
